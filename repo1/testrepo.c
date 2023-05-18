@@ -12,7 +12,12 @@ int main(void)
 	{
 		tra = trapezoid(0, 10, n);
 		sim = simpson(0, 10, n);
-		printf("%3d %10.10f %10.10f %10.10e %10.10f %10.10e\n", n, (10/(double)n), tra, fabs(tra - M_PI ), sim, fabs(sim - M_PI));
+		printf("%3d ", n);
+		printf("%10.10f ", (10/(double)n));
+		printf("%10.10f ", tra);
+		printf("%10.10e ", fabs(tra - M_PI));
+		printf("%10.10f ", sim);
+		printf("%10.10e\n", fabs(sim - M_PI));
 	}
 	return(0);
 }
