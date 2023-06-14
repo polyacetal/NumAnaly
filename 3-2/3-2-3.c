@@ -27,7 +27,7 @@ int main(void)
 			printf("Not Convergence");
 			break;
 		}
-	}while(abs(dx) > eps);      /* 解が得られるまでの繰り返し */
+	}while(fabs(dx) > eps);      /* 解が得られるまでの繰り返し */
 
 	printf("Iterations = %d  ", icount);
 	printf("x = %.16e  eps = %.16e  dx = %.16e  ", x0, eps, dx);
@@ -42,5 +42,5 @@ double FUNC(double x)  /* 関数 f(x)の設定 */
 
 double dFUNC(double x)  /* その導関数 f'(x)の設定 */
 {
-	return(1/x + x*exp(x));
+	return(1/x + exp(x));
 }
