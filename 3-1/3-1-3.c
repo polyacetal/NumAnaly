@@ -4,7 +4,7 @@
 
 const double EPS = 1.0e-10; /* 収束判定値 */
 
-double func( double ) ;	/* 関数のプロトタイプ宣言 */
+double func(double) ;	/* 関数のプロトタイプ宣言 */
 
 int main(void) 
 {
