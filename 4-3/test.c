@@ -1,0 +1,136 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+
+#define N 5
+
+int main(void)
+{
+	//与式の定義
+	double a[N][N] = {
+		{1, -1, -1, -1, -1},
+		{-1, 1, -1, -1, -1},
+		{-1, -1, 1, -1, -1},
+		{-1, -1, -1, 1, -1},
+		{-1, -1, -1, -1, 1}
+	};
+	double b[N] = {1, -3, -7, -9, -9};
+	double x[N] = {};
+	double expansion[N][N+1] = {0};	//拡大係数行列
+
+	//拡大係数行列の作成
+	for(int i=0; i < N; i++)
+	{
+		for(int j=0; j < N; j++)
+		{
+			expansion[i][j] = a[i][j];
+		}
+		expansion[i][5] = b[i];
+	}
+
+	//変数の定義
+	double mag, pmax, buff;
+	double sum_ax;
+	int p;
+
+	//拡大係数行列の表示
+	for(int i=0; i < N; i++)
+	{
+		printf("{ ");
+		for(int j=0; j < N; j++)
+		{
+			printf("%lf ", expansion[i][j]);
+		}
+		printf("| %lf }\n", expansion[i][5]);
+	}
+
+	//Gaussの消去法
+	for(int k=0; k < N-1; k++)
+	{
+		printf("Gauss %d\n", k);
+
+		//ピボットを確認して値の入れ替え
+		if(expansion[k][k] == 0){
+			printf("swap!\n");
+			p = k;
+			pmax = fabs(expansion[k][k]);
+			for(int i=k+1; i < N; i++)
+			{
+				if(fabs(expansion[i][k]) > pmax){
+					p = i;
+					pmax = fabs(expansion[i][k]);
+				}
+			}
+			if(fabs(pmax) <1.0e-12){
+			fprintf(stderr, "too small pivot!\n");
+			exit(1);
+			}
+			if(p != k){
+				for(int i=0; i < N+1; i++)
+				{
+					buff = expansion[p][i];
+					expansion[p][i] = expansion[k][i];
+					expansion[k][i] = buff;
+				}
+			}
+		}
+
+		//拡大係数行列の表示
+		for(int i=0; i < N; i++)
+		{
+			printf("{ ");
+			for(int j=0; j < N; j++)
+			{
+				printf("%lf ", expansion[i][j]);
+			}
+			printf("| %lf }\n", expansion[i][5]);
+		}
+
+		for(int i=k+1; i < N; i++)
+		{
+			mag = expansion[i][k] /expansion[k][k];
+			printf("i : %d\n", i);
+			printf("k : %d\n", k);
+			printf("ex[i][k] : %lf\n",expansion[i][k]);
+			printf("ex[k][k] : %lf\n",expansion[k][k]);
+			printf("mag : %lf\n", mag);
+			expansion[i][k] = 0.0;
+			for(int j=k+1; j < N+1; j++)
+			{
+				expansion[i][j] = expansion[i][j] - expansion[k][j]*mag;
+			}
+		}
+	}
+	printf("finish Gauss\n");
+
+	//後退代入
+	for(int k=N-1; k >=0; k--)
+	{
+		sum_ax = 0.0;
+		for(int j=N-1; j>k; j--)
+		{
+			sum_ax += expansion[k][j] * x[j];
+		}
+		x[k] = (expansion[k][N] - sum_ax) / expansion[k][k];
+		printf("x[k] : %lf\n", x[k]);
+	}
+
+	//拡大係数行列の表示
+	for(int i=0; i < N; i++)
+	{
+		printf("{ ");
+		for(int j=0; j < N; j++)
+		{
+			printf("%lf ", expansion[i][j]);
+		}
+		printf("| %lf }\n", expansion[i][5]);
+	}
+
+	//解の表示
+	for(int i=0; i<N; i++)
+	{
+		printf("x[i] : %lf\n", x[i]);
+	}
+
+	return 0;
+}
