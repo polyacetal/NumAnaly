@@ -98,7 +98,7 @@ int main(void)
 	//解の表示
 	for(int i=0; i<N; i++)
 	{
-		printf("x[i] : %lf\n", x[i]);
+		printf("x[%d] : %lf\n", i+1, x[i]);
 	}
 
 	return 0;
